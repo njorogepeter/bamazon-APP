@@ -20,12 +20,26 @@ connection.connect(function(err) {
   console.log("connected as id " + connection.threadId + "\n");
   readProducts();
 });
+
+function userPrompt(){
+    inquirer.prompt({
+        type: "input",
+        name: "choice",
+        message: "Enter ID of purchase item"
+    })
+    .then(function(answer){
+        var productId = parseInt(answer.choice);
+         console.log(productId);
+        
+    });
+}
 function readProducts() {
     console.log("Selecting all products...\n");
     connection.query("SELECT * FROM products", function(err, res) {
       if (err) throw err;
       // Log all results of the SELECT statement
       console.table(res);
+      userPrompt();
       connection.end();
     });
   }
