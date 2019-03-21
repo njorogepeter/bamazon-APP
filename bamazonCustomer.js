@@ -30,15 +30,30 @@ function userPrompt(){
     .then(function(answer){
         var productId = parseInt(answer.choice);
          console.log(productId);
+         //if the product is there ask the customer for quantity
+         //prompt user for quantity
         
     });
 }
+//function for prompt user for quantity
+    //quantity variable
+
+    //quantity check if the product is enough
+    //buy if quantity is enough
+
+//buy the chosen item and quantity 
+
+//validate the user choice from choice prompt
+
+//allow the user to exit anytime during the purchase
+
 function readProducts() {
     console.log("Selecting all products...\n");
     connection.query("SELECT * FROM products", function(err, res) {
       if (err) throw err;
       // Log all results of the SELECT statement
       console.table(res);
+      //prompt user for product of their choice
       userPrompt();
       connection.end();
     });
