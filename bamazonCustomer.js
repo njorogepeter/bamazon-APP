@@ -21,7 +21,7 @@ connection.connect(function(err) {
   readProducts();
 });
 
-function customerPrompt(){
+function customerPrompt(inventory){
     inquirer.prompt({
         type: "input",
         name: "choice",
@@ -45,19 +45,42 @@ function customerPrompt(){
 }
 //function for prompt user for quantity
 function quantityPrompt(product){
-    //quantity variable
-
-    //quantity check if the product is enough
-    //buy if quantity is enough
-
-//buy the chosen item and quantity 
+    inquirer
+    .prompt({
+        type: "input",
+        name: "quantity",
+        message: "Enter how many you want"
+    })
+    .then(function(answer){
+         //quantity variable
+         var quantity = parseInt(answer.quantity);
+        //quantity check if the product is enough
+        if(quantity > product.stock_quantity){
+            console.log("Insufficient quantity!");
+            readProducts();
+        }
+        //buy if quantity is enough
+        else {
+            //buy the chosen item and quantity
+            buy(product, quantity);
+        }
+    })
+   
+}
 
 //validate the user choice from choice prompt
 
 //allow the user to exit anytime during the purchase
+//inventory check
+function inventoryCheck(productId, inventory){
+    for(var i = 0; i < inventory.length; i++){
+        //check if item exits
+        if(inventory[i].item_id === productId){
+            return inventory[i]
+        }
+    }
+    return null;
 }
-    
-
 function readProducts() {
     console.log("Selecting all products...\n");
     connection.query("SELECT * FROM products", function(err, res) {
@@ -65,7 +88,7 @@ function readProducts() {
       // Log all results of the SELECT statement
       console.table(res);
       //prompt user for product of their choice
-      customerPrompt();
-      connection.end();
+      customerPrompt(res);
+    //   connection.end();
     });
   }
