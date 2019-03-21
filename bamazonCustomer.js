@@ -21,7 +21,7 @@ connection.connect(function(err) {
   readProducts();
 });
 
-function userPrompt(){
+function customerPrompt(){
     inquirer.prompt({
         type: "input",
         name: "choice",
@@ -29,13 +29,22 @@ function userPrompt(){
     })
     .then(function(answer){
         var productId = parseInt(answer.choice);
+        var product = inventoryCheck(productId, inventory);
          console.log(productId);
          //if the product is there ask the customer for quantity
          //prompt user for quantity
+         if(product){
+             quantityPrompt(product);
+         }
+         else{
+             console.log("Item does not exist");
+             readProducts();
+         }
         
     });
 }
 //function for prompt user for quantity
+function quantityPrompt(product){
     //quantity variable
 
     //quantity check if the product is enough
@@ -46,6 +55,8 @@ function userPrompt(){
 //validate the user choice from choice prompt
 
 //allow the user to exit anytime during the purchase
+}
+    
 
 function readProducts() {
     console.log("Selecting all products...\n");
@@ -54,7 +65,7 @@ function readProducts() {
       // Log all results of the SELECT statement
       console.table(res);
       //prompt user for product of their choice
-      userPrompt();
+      customerPrompt();
       connection.end();
     });
   }
