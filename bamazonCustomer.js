@@ -81,6 +81,15 @@ function inventoryCheck(productId, inventory){
     }
     return null;
 }
+//buying item
+function buy(product, quantity){
+    var query = "UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?";
+    connection.query(query, [quantity, product.price * quantity, product.item_id], function(err, res){
+        console.log("Total cost $ " + quantity * product.price);
+        readProducts();
+    })
+}
+
 function readProducts() {
     console.log("Selecting all products...\n");
     connection.query("SELECT * FROM products", function(err, res) {
@@ -92,3 +101,4 @@ function readProducts() {
     //   connection.end();
     });
   }
+// ask customer if they want to do another purchase
